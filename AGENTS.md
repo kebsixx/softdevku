@@ -17,10 +17,15 @@ Seluruh instruksi pengembangan Wajib mengikuti aturan berikut:
 - **Framework:** Next.js (App Router)
 - **Bahasa:** JavaScript (JS / JSX). **JANGAN gunakan TypeScript** (`.ts` / `.tsx`).
 - **Styling:** Tailwind CSS (Utility classes)
-- **UI Components:** shadcn/ui (berbasis Tailwind & Radix primitives)
+- **UI Components:** shadcn/ui style `base-sera` (berbasis **Base UI** primitives, bukan Radix)
 - **Icons:** `lucide-react`
-- **State Management:** React Context API (Cart Context & Search Context)
-- **Data Source:** `https://fakestoreapi.reactbd.com/products` (atau endpoint turunan seperti `/products`)
+- **State Management:** React Context API (`CartContext` & `SearchContext`, di `src/context/`)
+- **Data Source:** `https://fakestoreapi.noksha.dev/api/products?perPage=100`
+
+> **Catatan endpoint:** `?perPage=100` wajib — tanpa itu API hanya mengirim 20 dari 30
+> produk. Endpoint lama `fakestoreapi.reactbd.com` sudah mati: mengembalikan HTML,
+> bukan JSON. Response dibungkus `{ data, totalProducts, totalPages, ... }`, jadi
+>Always ambil lewat `payload.data`.
 
 ---
 
@@ -38,6 +43,11 @@ Pengembangan saat ini diprioritaskan hanya pada 3 modul utama:
    - Mengubah jumlah (_quantity_) item dalam keranjang.
    - Menghapus item dari keranjang.
    - Menghitung total harga dan jumlah barang secara _real-time_.
+4. **Persistensi Keranjang:**
+   - State keranjang disimpan di `localStorage` (key `softdevku-cart`).
+   - Implementasi memakai `useSyncExternalStore` dengan `localStorage` sebagai external
+     store, bukan `useState` + effect, untuk menghindari cascading render dan
+     hydration mismatch.
 
 ---
 
