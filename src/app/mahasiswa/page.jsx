@@ -11,9 +11,10 @@ export default function Home() {
   const [namaBaru, setNamaBaru] = useState("");
 
   const handleTambah = () => {
-    if (namaBaru.trim() === "") return;
+    const nama = namaBaru.trim();
+    if (nama === "") return;
 
-    setMahasiswa([...mahasiswa, { nama: namaBaru }]);
+    setMahasiswa([...mahasiswa, { id: crypto.randomUUID(), nama }]);
     setNamaBaru("");
   };
 
@@ -21,10 +22,8 @@ export default function Home() {
     mhs.nama.toLowerCase().includes(search.toLowerCase()),
   );
 
-  const handleHapus = (index) => {
-    const updatedMahasiswa = [...mahasiswa];
-    updatedMahasiswa.splice(index, 1);
-    setMahasiswa(updatedMahasiswa);
+  const handleHapus = (id) => {
+    setMahasiswa(mahasiswa.filter((mhs) => mhs.id !== id));
   };
 
   return (
@@ -52,11 +51,12 @@ export default function Home() {
       </div>
 
       <div className="space-y-4 mb-5">
-        {mahasiswaFiltered.map((mhs, index) => (
+        {mahasiswaFiltered.map((mhs) => (
           <Cardku
-            key={index}
+            key={mhs.id}
+            id={mhs.id}
             name={mhs.nama}
-            handleHapus={() => handleHapus(index)}
+            handleHapus={() => handleHapus(mhs.id)}
           />
         ))}
       </div>
