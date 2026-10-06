@@ -14,10 +14,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
-
-function formatPrice(value) {
-  return `$${Number(value).toFixed(2)}`;
-}
+import { formatPrice } from "@/lib/format";
 
 function CartSheet({ children }) {
   const {

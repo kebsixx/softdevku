@@ -14,7 +14,12 @@ export default function Home() {
     const nama = namaBaru.trim();
     if (nama === "") return;
 
-    setMahasiswa([...mahasiswa, { id: crypto.randomUUID(), nama }]);
+    // randomUUID hanya tersedia di secure context (https atau localhost).
+    const id =
+      globalThis.crypto?.randomUUID?.() ??
+      `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
+    setMahasiswa([...mahasiswa, { id, nama }]);
     setNamaBaru("");
   };
 
@@ -34,7 +39,7 @@ export default function Home() {
           type="text"
           placeholder="Cari mahasiswa..."
           value={search}
-          className="focus-visible:ring-0 focus:visible:border"
+          className="focus-visible:border"
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
@@ -44,7 +49,7 @@ export default function Home() {
           type="text"
           placeholder="Tambah mahasiswa..."
           value={namaBaru}
-          className="focus-visible:ring-0 focus:visible:border"
+          className="focus-visible:border"
           onChange={(e) => setNamaBaru(e.target.value)}
         />
         <Button onClick={handleTambah}>Tambah</Button>
@@ -54,7 +59,6 @@ export default function Home() {
         {mahasiswaFiltered.map((mhs) => (
           <Cardku
             key={mhs.id}
-            id={mhs.id}
             name={mhs.nama}
             handleHapus={() => handleHapus(mhs.id)}
           />

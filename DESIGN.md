@@ -113,8 +113,8 @@ Route lain tidak punya context cart.
 - Item: thumbnail 64px, judul clamp 2 baris, harga satuan, kontrol kuantitas
 - Kontrol: `Minus`, angka, `Plus`, `Trash2`
 - `Minus` di quantity 1 **menghapus item** — ditangani di `CartContext`
-- Footer sticky: subtotal + tombol `Checkout` (disabled, di luar scope) +
-  `Kosongkan keranjang`
+- Footer di bawah area scroll: subtotal + tombol `Checkout` (disabled, di luar
+  scope) + `Kosongkan keranjang`. Bukan sticky — `SheetFooter` hanya punya `mt-auto`.
 - Empty state: pesan "Keranjang kosong"
 
 ### E. Loading & Error
@@ -156,25 +156,30 @@ Route lain tidak punya context cart.
 
 ### 6.2 Format harga
 
+Pakai helper bersama di `src/lib/format.js`:
+
 ```js
-function formatPrice(value) {
-  return `$${Number(value).toFixed(2)}`;
-}
+import { formatPrice } from "@/lib/format";
 ```
 
-`Number()` wajib: `oldPrice` dari API datang sebagai string, `price` sebagai number.
+`Number()` di dalamnya wajib: `oldPrice` dari API datang sebagai string, `price`
+sebagai number.
 
 ### 6.3 Link sebagai tombol
 
-Untuk navigasi internal, bungkus `<Button>` dengan `<Link>`:
+Untuk navigasi internal, pakai prop `render` dari Base UI — jangan membungkus
+`<Button>` dengan `<Link>`:
 
 ```jsx
-<Link href="/store" className="w-full">
-  <Button className="w-full">Buka</Button>
-</Link>
+<Button render={<Link href="/store" />} className="w-full">
+  Buka
+</Button>
 ```
 
-Jangan pakai `<a href>` — memicu full page reload dan membuang state client.
+`<Link>` membungkus `<Button>` berarti ada `<a>` di dalam elemen interaktif lain,
+itu HTML tidak valid dan membingungkan navigasi keyboard dan screen reader.
+
+Jangan juga memakai `<a href>` — memicu full page reload dan membuang state client.
 
 ---
 
@@ -184,4 +189,12 @@ Jangan pakai `<a href>` — memicu full page reload dan membuang state client.
 - Tombol icon-only: wajib `aria-label` (mis. `aria-label="Hapus dari keranjang"`)
 - Input search: `aria-label="Cari produk"`
 - `<nav>` diberi `aria-label="Navigasi utama"`
-- Judul `<h1>` satu per halaman
+- Setiap halaman punya tepat satu `<h1>`
+
+> **Known gap:** `CardTitle` di `src/components/ui/card.jsx` dirender sebagai `<div>`,
+> bukan heading. Halaman yang judulnya hanya memakai `CardTitle` — seperti `/diriku` —
+> belum punya elemen heading sama sekali. Tambahkan `<h1>` eksplisit di halaman itu.
+
+> **Known gap:** mode gelap punya blok `.dark` lengkap di `globals.css`, tapi tidak ada
+> yang memasang kelas itu dan belum ada fallback `prefers-color-scheme`. Estado gelap
+> belum bisa dipakai di runtime.

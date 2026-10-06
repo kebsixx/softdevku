@@ -1,18 +1,27 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 
 const SearchContext = createContext(null);
 
 function SearchProvider({ children }) {
   const [searchQuery, setSearchQuery] = useState("");
 
-  const clearSearch = () => setSearchQuery("");
+  const clearSearch = useCallback(() => setSearchQuery(""), []);
+
+  const value = useMemo(
+    () => ({ searchQuery, setSearchQuery, clearSearch }),
+    [searchQuery, clearSearch],
+  );
 
   return (
-    <SearchContext.Provider value={{ searchQuery, setSearchQuery, clearSearch }}>
-      {children}
-    </SearchContext.Provider>
+    <SearchContext.Provider value={value}>{children}</SearchContext.Provider>
   );
 }
 

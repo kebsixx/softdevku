@@ -58,9 +58,11 @@ export default function Home() {
                 <CardDescription>{page.description}</CardDescription>
               </CardHeader>
               <CardFooter>
-                <Link href={page.href} className="w-full">
-                  <Button className="w-full">Buka</Button>
-                </Link>
+                <Button
+                  render={<Link href={page.href} />}
+                  className="w-full">
+                  Buka
+                </Button>
               </CardFooter>
             </Card>
           );

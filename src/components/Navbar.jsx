@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { ShoppingBag, ShoppingCart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { CartSheet } from "@/components/CartSheet";
 import { SearchBar } from "@/components/SearchBar";
 import { useCart } from "@/context/CartContext";
@@ -45,7 +44,11 @@ function Navbar() {
 
           <CartSheet>
             <ShoppingCart aria-hidden="true" />
-            <span className="sr-only">Buka keranjang</span>
+            <span className="sr-only">
+              {totalItems > 0
+                ? `Buka keranjang, ${totalItems} item`
+                : "Buka keranjang, kosong"}
+            </span>
             {totalItems > 0 && (
               <Badge className="absolute -right-2 -top-2 tabular-nums" aria-hidden="true">
                 {totalItems}

@@ -38,8 +38,9 @@ _User-Side Fetching_ di Server Component dan state global via React Context.
 ```
 
 Provider hanya dipasang di `src/app/store/layout.jsx`, bukan di root. Halaman
-`/diriku` dan `/mahasiswa` tidak memakai context keranjang, dan file mereka tidak
-pernah disentuh oleh perubahan e-commerce.
+`/diriku` dan `/mahasiswa` tidak memakai context keranjang. `/diriku` tidak pernah
+disentuh sama sekali; `/mahasiswa` sempat diperbaiki bug penghapusannya, tapi
+strukturnya tetap sama.
 
 ---
 

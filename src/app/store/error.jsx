@@ -3,7 +3,7 @@
 import { AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export default function StoreError({ error, reset }) {
+export default function StoreError({ reset }) {
   return (
     <main className="mx-auto flex max-w-7xl flex-col items-center gap-4 px-4 py-20 text-center">
       <AlertTriangle
@@ -17,7 +17,6 @@ export default function StoreError({ error, reset }) {
         Tidak bisa menghubungi Fake Store API. Periksa koneksi internet lalu
         coba lagi.
       </p>
-      <p className="font-mono text-xs text-muted-foreground">{error.message}</p>
       <Button onClick={reset}>Coba lagi</Button>
     </main>
   );

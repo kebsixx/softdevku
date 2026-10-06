@@ -1,6 +1,6 @@
 import { Playfair_Display, Noto_Sans } from "next/font/google";
+import { cn } from "cn";
 import "./globals.css";
-import { cn } from "@/lib/utils";
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
