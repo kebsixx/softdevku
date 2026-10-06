@@ -15,6 +15,7 @@
 
 # next.js
 /.next/
+/.superpowers/
 /out/
 
 # production
