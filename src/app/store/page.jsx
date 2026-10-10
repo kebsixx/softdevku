@@ -21,12 +21,12 @@ export default async function StorePage() {
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-8">
-      <div className="mb-8">
-        <h1 className="font-heading text-3xl uppercase tracking-widest">
+      <div className="mb-6 flex flex-wrap items-end justify-between gap-x-6 gap-y-2 border-b border-border pb-5">
+        <h1 className="font-heading text-3xl uppercase tracking-widest text-balance">
           Katalog Produk
         </h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          {products.length} produk siap dijelajahi
+        <p className="text-sm tabular-nums text-muted-foreground">
+          {products.length} produk
         </p>
       </div>
 

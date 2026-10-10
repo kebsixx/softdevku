@@ -1,5 +1,6 @@
 "use client";
 
+import { Plus, UserX } from "lucide-react";
 import Cardku from "@/components/cardku";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,11 +33,23 @@ export default function Home() {
   };
 
   return (
-    <div className="min-w-xl p-8 mx-auto">
-      <h1 className="text-3xl font-bold mb-6 text-center">Daftar Mahasiswa</h1>
-      <div className="mb-5">
+    <main className="mx-auto w-full max-w-2xl px-4 py-12">
+      <div className="mb-6 flex items-end justify-between gap-4 border-b border-border pb-5">
+        <h1 className="font-heading text-3xl uppercase tracking-widest">
+          Daftar Mahasiswa
+        </h1>
+        <p className="text-sm tabular-nums text-muted-foreground">
+          {mahasiswa.length} orang
+        </p>
+      </div>
+
+      <div className="mb-3">
+        <label htmlFor="cari-mahasiswa" className="sr-only">
+          Cari mahasiswa
+        </label>
         <Input
-          type="text"
+          id="cari-mahasiswa"
+          type="search"
           placeholder="Cari mahasiswa..."
           value={search}
           className="focus-visible:border"
@@ -44,26 +57,50 @@ export default function Home() {
         />
       </div>
 
-      <div className="flex gap-2 mb-5">
-        <Input
-          type="text"
-          placeholder="Tambah mahasiswa..."
-          value={namaBaru}
-          className="focus-visible:border"
-          onChange={(e) => setNamaBaru(e.target.value)}
-        />
-        <Button onClick={handleTambah}>Tambah</Button>
+      <div className="mb-8 flex gap-2">
+        <div className="flex-1">
+          <label htmlFor="nama-baru" className="sr-only">
+            Nama mahasiswa yang ditambahkan
+          </label>
+          <Input
+            id="nama-baru"
+            type="text"
+            placeholder="Tambah mahasiswa..."
+            value={namaBaru}
+            className="focus-visible:border"
+            onChange={(e) => setNamaBaru(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleTambah();
+            }}
+          />
+        </div>
+        <Button onClick={handleTambah} className="shrink-0">
+          <Plus aria-hidden="true" />
+          Tambah
+        </Button>
       </div>
 
-      <div className="space-y-4 mb-5">
-        {mahasiswaFiltered.map((mhs) => (
-          <Cardku
-            key={mhs.id}
-            name={mhs.nama}
-            handleHapus={() => handleHapus(mhs.id)}
-          />
-        ))}
-      </div>
-    </div>
+      {mahasiswaFiltered.length === 0 ? (
+        <div className="flex flex-col items-center gap-3 py-16 text-center">
+          <UserX aria-hidden="true" className="size-10 text-muted-foreground" />
+          <p className="font-heading text-lg uppercase tracking-wider">
+            {mahasiswa.length === 0 ? "Belum ada mahasiswa" : "Tidak ada hasil"}
+          </p>
+          <p className="max-w-[34ch] text-sm text-muted-foreground">
+            {mahasiswa.length === 0
+              ? "Isi kolom di atas, lalu tekan Tambah."
+              : `Tidak ada mahasiswa bernama "${search}".`}
+          </p>
+        </div>
+      ) : (
+        <ul className="space-y-3">
+          {mahasiswaFiltered.map((mhs) => (
+            <li key={mhs.id}>
+              <Cardku name={mhs.nama} handleHapus={() => handleHapus(mhs.id)} />
+            </li>
+          ))}
+        </ul>
+      )}
+    </main>
   );
 }

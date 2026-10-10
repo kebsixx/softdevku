@@ -1,13 +1,6 @@
 import Link from "next/link";
-import { GraduationCap, ShoppingBag, User } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { ArrowRight, GraduationCap, ShoppingBag, User } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 const PAGES = [
   {
@@ -15,59 +8,75 @@ const PAGES = [
     icon: ShoppingBag,
     title: "StoreDev",
     description:
-      "Katalog produk dengan pencarian real-time dan keranjang belanja. Tugas minggu ini.",
+      "Katalog produk dengan pencarian real-time dan keranjang belanja.",
+    tag: "Tugas minggu ini",
   },
   {
     href: "/diriku",
     icon: User,
     title: "Diriku",
-    description: "Kartu profil singkat. Percobaan minggu sebelumnya.",
+    description: "Kartu profil singkat.",
+    tag: null,
   },
   {
     href: "/mahasiswa",
     icon: GraduationCap,
     title: "Mahasiswa",
-    description:
-      "Daftar mahasiswa dengan tambah, hapus, dan pencarian. Percobaan minggu sebelumnya.",
+    description: "Daftar mahasiswa dengan tambah, hapus, dan pencarian.",
+    tag: null,
   },
 ];
 
 export default function Home() {
   return (
-    <main className="mx-auto flex min-h-screen max-w-5xl flex-col justify-center px-4 py-16">
-      <div className="mb-10 text-center">
-        <h1 className="font-heading text-4xl uppercase tracking-widest">
+    <main className="mx-auto flex min-h-dvh max-w-3xl flex-col justify-center px-4 py-16">
+      <header className="border-b border-border pb-8">
+        <p className="text-sm uppercase tracking-widest text-muted-foreground">
+          UKM Softdev
+        </p>
+        <h1 className="mt-3 font-heading text-4xl uppercase tracking-widest text-balance">
           Softdev Hacker Project
         </h1>
-        <p className="mt-2 text-muted-foreground">
-          Latihan Next.js dari UKM Softdev
+        <p className="mt-4 max-w-[52ch] text-muted-foreground">
+          Tiga latihan mingguan. Pilih salah satu untuk mulai.
         </p>
-      </div>
+      </header>
 
-      <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 md:gap-6">
+      <ul className="divide-y divide-border">
         {PAGES.map((page) => {
           const Icon = page.icon;
+
           return (
-            <Card key={page.href}>
-              <CardHeader>
+            <li key={page.href}>
+              <Link
+                href={page.href}
+                className="group flex items-center gap-4 py-5 sm:gap-5">
                 <Icon
                   aria-hidden="true"
-                  className="size-6 text-muted-foreground"
+                  className="size-5 shrink-0 text-muted-foreground"
                 />
-                <CardTitle>{page.title}</CardTitle>
-                <CardDescription>{page.description}</CardDescription>
-              </CardHeader>
-              <CardFooter>
-                <Button
-                  render={<Link href={page.href} />}
-                  className="w-full">
-                  Buka
-                </Button>
-              </CardFooter>
-            </Card>
+
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                    <h2 className="font-heading text-lg uppercase tracking-widest group-hover:underline">
+                      {page.title}
+                    </h2>
+                    {page.tag && <Badge variant="secondary">{page.tag}</Badge>}
+                  </div>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {page.description}
+                  </p>
+                </div>
+
+                <ArrowRight
+                  aria-hidden="true"
+                  className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
+                />
+              </Link>
+            </li>
           );
         })}
-      </div>
+      </ul>
     </main>
   );
 }

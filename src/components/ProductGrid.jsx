@@ -2,11 +2,12 @@
 
 import { useMemo } from "react";
 import { SearchX } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/ProductCard";
 import { useSearch } from "@/context/SearchContext";
 
 function ProductGrid({ products }) {
-  const { searchQuery } = useSearch();
+  const { searchQuery, clearSearch } = useSearch();
 
   const filteredProducts = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
@@ -21,18 +22,21 @@ function ProductGrid({ products }) {
 
   if (filteredProducts.length === 0) {
     return (
-      <div className="flex flex-col items-center gap-3 py-20 text-center">
+      <div className="flex flex-col items-center gap-4 py-24 text-center">
         <SearchX aria-hidden="true" className="size-10 text-muted-foreground" />
-        <p className="font-heading text-lg uppercase tracking-wider">
-          {searchQuery
-            ? `Produk "${searchQuery}" tidak ditemukan`
-            : "Belum ada produk"}
+        <p className="font-heading text-lg uppercase tracking-wider text-balance">
+          {searchQuery ? "Produk tidak ditemukan" : "Belum ada produk"}
         </p>
-        <p className="text-sm text-muted-foreground">
+        <p className="max-w-[38ch] text-sm text-muted-foreground">
           {searchQuery
-            ? "Coba kata kunci lain atau bersihkan pencarian."
+            ? `Tidak ada produk yang cocok dengan "${searchQuery}".`
             : "Data produk gagal dimuat atau kosong."}
         </p>
+        {searchQuery && (
+          <Button variant="outline" size="sm" onClick={clearSearch}>
+            Bersihkan pencarian
+          </Button>
+        )}
       </div>
     );
   }

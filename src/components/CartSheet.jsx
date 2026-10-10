@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Minus, Plus, Trash2 } from "lucide-react";
+import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -45,11 +45,16 @@ function CartSheet({ children }) {
 
         {cart.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-3 p-8 text-center">
+            <ShoppingBag
+              aria-hidden="true"
+              className="size-10 text-muted-foreground"
+            />
             <p className="font-heading text-lg uppercase tracking-wider">
               Keranjang kosong
             </p>
-            <p className="text-sm text-muted-foreground">
-              Belum ada produk yang ditambahkan.
+            <p className="max-w-[32ch] text-sm text-muted-foreground">
+              Belum ada produk yang ditambahkan. Pilih produk dari katalog,
+              lalu tekan Tambah.
             </p>
           </div>
         ) : (
@@ -68,41 +73,49 @@ function CartSheet({ children }) {
                       />
                     </div>
 
-                    <div className="flex min-w-0 flex-1 flex-col gap-1">
-                      <p className="line-clamp-2 text-sm font-medium">
-                        {item.title}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {formatPrice(item.price)}
-                      </p>
+                    <div className="flex min-w-0 flex-1 flex-col gap-3">
+                      <div className="flex items-start justify-between gap-3">
+                        <p className="line-clamp-2 text-sm font-medium text-balance">
+                          {item.title}
+                        </p>
+                        <span className="shrink-0 text-sm font-semibold tabular-nums">
+                          {formatPrice(item.price * item.quantity)}
+                        </span>
+                      </div>
 
-                      <div className="mt-1 flex items-center gap-2">
-                        <Button
-                          size="icon-xs"
-                          variant="outline"
-                          onClick={() => updateQuantity(item._id, "dec")}
-                          aria-label={`Kurangi jumlah ${item.title}`}
-                        >
-                          <Minus aria-hidden="true" />
-                        </Button>
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center border border-foreground/20">
+                          <Button
+                            size="icon-sm"
+                            variant="ghost"
+                            onClick={() => updateQuantity(item._id, "dec")}
+                            aria-label={`Kurangi jumlah ${item.title}`}
+                          >
+                            <Minus aria-hidden="true" />
+                          </Button>
 
-                        <span className="min-w-6 text-center text-sm tabular-nums">
-                          {item.quantity}
+                          <span className="w-7 text-center text-sm tabular-nums">
+                            {item.quantity}
+                          </span>
+
+                          <Button
+                            size="icon-sm"
+                            variant="ghost"
+                            onClick={() => updateQuantity(item._id, "inc")}
+                            aria-label={`Tambah jumlah ${item.title}`}
+                          >
+                            <Plus aria-hidden="true" />
+                          </Button>
+                        </div>
+
+                        <span className="text-xs tabular-nums text-muted-foreground">
+                          {formatPrice(item.price)} per item
                         </span>
 
                         <Button
-                          size="icon-xs"
-                          variant="outline"
-                          onClick={() => updateQuantity(item._id, "inc")}
-                          aria-label={`Tambah jumlah ${item.title}`}
-                        >
-                          <Plus aria-hidden="true" />
-                        </Button>
-
-                        <Button
-                          size="icon-xs"
+                          size="icon-sm"
                           variant="ghost"
-                          className="ml-auto"
+                          className="ml-auto shrink-0 text-muted-foreground hover:text-destructive"
                           onClick={() => removeFromCart(item._id)}
                           aria-label={`Hapus ${item.title} dari keranjang`}
                         >
@@ -116,23 +129,25 @@ function CartSheet({ children }) {
             </ScrollArea>
 
             <SheetFooter className="border-t border-border">
-              <div className="flex items-center justify-between">
+              <div className="flex items-baseline justify-between">
                 <span className="text-sm uppercase tracking-widest text-muted-foreground">
                   Subtotal
                 </span>
-                <span className="font-heading text-xl">
+                <span className="text-lg font-semibold tabular-nums">
                   {formatPrice(totalPrice)}
                 </span>
               </div>
 
-              <Button className="w-full" size="lg" disabled>
-                Checkout
-              </Button>
+              <div>
+                <Button className="w-full" size="lg" disabled>
+                  Checkout
+                </Button>
+                <p className="mt-2 text-center text-xs text-muted-foreground">
+                  Belum tersedia di tugas ini — subtotal di atas sudah final.
+                </p>
+              </div>
 
-              <Button
-                variant="ghost"
-                className="w-full"
-                onClick={clearCart}>
+              <Button variant="ghost" className="w-full" onClick={clearCart}>
                 Kosongkan keranjang
               </Button>
             </SheetFooter>
