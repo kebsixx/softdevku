@@ -13,7 +13,7 @@ export default function StoreLoading() {
           <div
             key={index}
             className="flex h-full flex-col gap-5 bg-card p-5 ring-1 ring-foreground/15">
-            <Skeleton className="aspect-square w-full" />
+            <Skeleton className="aspect-[4/5] w-full" />
             <div className="flex flex-col gap-3">
               <Skeleton className="h-3 w-1/2" />
               <Skeleton className="h-4 w-full" />

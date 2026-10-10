@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
-import { Check, Plus, Star } from "lucide-react";
+import { Check, ImageOff, Plus, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,19 +23,27 @@ function ProductCard({ product }) {
   const discount = was > now ? Math.round((1 - now / was) * 100) : 0;
 
   const inCart = cart.find((item) => item._id === product._id)?.quantity ?? 0;
+  const [broken, setBroken] = useState(false);
 
   return (
     <Card
       size="sm"
       className="group h-full shadow-none ring-foreground/15 transition-colors hover:ring-foreground/40">
-      <div className="relative aspect-square overflow-hidden bg-muted">
-        <Image
-          src={product.image}
-          alt={product.title}
-          fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-          className="object-contain p-4 transition-transform duration-300 ease-out group-hover:scale-105"
-        />
+      <div className="relative aspect-4/5 overflow-hidden bg-muted">
+        {broken ? (
+          <div className="flex h-full w-full items-center justify-center text-muted-foreground">
+            <ImageOff aria-hidden="true" className="size-8" />
+          </div>
+        ) : (
+          <Image
+            src={product.image}
+            alt={product.title}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            onError={() => setBroken(true)}
+            className="object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+          />
+        )}
 
         <div className="absolute left-2 top-2 flex flex-col items-start gap-1">
           {product.isNew && <Badge className="bg-foreground text-background">Baru</Badge>}
